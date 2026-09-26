@@ -27,4 +27,12 @@ document.getElementById('get-started').addEventListener('click', () => {
   document.getElementById('screen-landing').classList.add('hidden');
   document.getElementById('tabs').classList.remove('hidden');
   document.getElementById('screen-log').classList.remove('hidden');
+  document.getElementById('back-to-landing').classList.remove('hidden');
+});
+
+document.getElementById('back-to-landing').addEventListener('click', () => {
+  document.getElementById('screen-log').classList.add('hidden');
+  document.getElementById('tabs').classList.add('hidden');
+  document.getElementById('screen-landing').classList.remove('hidden');
+  document.getElementById('back-to-landing').classList.add('hidden');
 });

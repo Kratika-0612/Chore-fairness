@@ -18,24 +18,29 @@
   </header>
 
   <section class="screen" id="screen-landing">
-  <h2 class="hero-headline">Stop guessing who does more.</h2>
-  <p class="hero-sub">A quick tap logs what you did. Effort-weighted, tracked over the week, and never guilt-trippy.</p>
+    <div class="hero-layout">
+      <div class="hero-left">
+        <span class="hero-eyebrow">New · Free to try</span>
+        <h2 class="hero-headline">Stop guessing who does more.</h2>
+        <p class="hero-sub">A quick tap logs what you did. Effort-weighted, tracked over the week, and never guilt-trippy.</p>
+        <button class="cta-button" id="get-started">Get started</button>
+      </div>
+      <div class="hero-right">
+        <div class="split-bar hero-bar">
+          <div class="split-fill you" style="width: 62%"><span class="split-label">You · 62%</span></div>
+          <div class="split-fill bob" style="width: 38%"><span class="split-label">Bob · 38%</span></div>
+        </div>
+        <ul class="feature-list">
+          <li>Weighs effort, not just task count</li>
+          <li>Smooths one busy day into the week's real trend</li>
+          <li>Nudges gently — never a guilt trip</li>
+        </ul>
+      </div>
+    </div>
+  </section>
 
-  <div class="split-bar hero-bar">
-    <div class="split-fill you" style="width: 62%"><span class="split-label">You · 62%</span></div>
-    <div class="split-fill bob" style="width: 38%"><span class="split-label">Bob · 38%</span></div>
-  </div>
-
-  <ul class="feature-list">
-    <li>Weighs effort, not just task count</li>
-    <li>Smooths one busy day into the week's real trend</li>
-    <li>Nudges gently — never a guilt trip</li>
-  </ul>
-
-  <button class="cta-button" id="get-started">Get started</button>
-</section>
-
-  <section class="screen" id="screen-log">
+  <section class="screen hidden" id="screen-log">
+    <button class="back-button hidden" id="back-to-landing">← Back</button>
     <div class="user-toggle">
       <button class="user-pill you active">You</button>
       <button class="user-pill bob">Bob</button>
@@ -72,20 +77,59 @@
   </section>
 
   <section class="screen hidden" id="screen-dashboard">
-    <p class="section-title">This week's split</p>
-    <div class="split-bar">
-      <div class="split-fill you" style="width: 62%"><span class="split-label">You · 62%</span></div>
-      <div class="split-fill bob" style="width: 38%"><span class="split-label">Bob · 38%</span></div>
-    </div>
+    <div class="dashboard-cols">
+      <div class="dashboard-col-left">
+        <p class="section-title">This week's split</p>
+        <div class="split-bar">
+          <div class="split-fill you" style="width: 62%"><span class="split-label">You · 62%</span></div>
+          <div class="split-fill bob" style="width: 38%"><span class="split-label">Bob · 38%</span></div>
+        </div>
+        <div class="nudge">
+          <p>Heads up — the scale's tipping your way this week. Maybe let Bob grab the next one.</p>
+        </div>
+      </div>
+      <div class="dashboard-col-right">
+        <p class="section-title">Over the last 7 days</p>
+        <div class="chart-wrap">
+          <div class="chart-legend">
+            <span class="legend-item"><span class="legend-swatch you"></span>You · 62%</span>
+            <span class="legend-item"><span class="legend-swatch bob"></span>Bob · 38%</span>
+          </div>
+          <!--
+            viewBox: x=0–340, y=0–130
+            Plot area: y=10 (top, 100%) → y=110 (bottom, 0%)
+            So a value of P% maps to y = 110 - (P/100 * 100) = 110 - P
+            7 days: x = 10, 60, 110, 160, 210, 260, 310  (step 50, padded)
 
-    <p class="section-title">Over the last 7 days</p>
-    <svg class="trend-chart" viewBox="0 0 320 120" preserveAspectRatio="none">
-      <polyline class="trend-line you" points="0,60 45,50 90,55 135,40 180,45 225,30 270,35 315,25" />
-      <polyline class="trend-line bob" points="0,60 45,70 90,65 135,80 180,75 225,90 270,85 315,95" />
-    </svg>
+            You daily effort %:  48, 55, 50, 65, 58, 68, 62  → trending to 62
+            Bob daily effort %:  52, 45, 50, 35, 42, 32, 38  → trending to 38
+            (they always sum to 100 per day)
+          -->
+          <svg class="trend-chart" viewBox="0 0 340 130" preserveAspectRatio="xMidYMid meet">
+            <!-- horizontal grid lines at 25%, 50%, 75% -->
+            <line class="trend-grid-line" x1="10" y1="35"  x2="330" y2="35"  />
+            <line class="trend-grid-line" x1="10" y1="60"  x2="330" y2="60"  />
+            <line class="trend-grid-line" x1="10" y1="85"  x2="330" y2="85"  />
 
-    <div class="nudge">
-      <p>Heads up — the scale's tipping your way this week. Maybe let Bob grab the next one.</p>
+            <!-- You line: y = 110 - effort% -->
+            <polyline class="trend-line you"
+              points="10,62  60,55  110,60  160,45  210,52  260,42  310,48" />
+
+            <!-- Bob line: y = 110 - effort% -->
+            <polyline class="trend-line bob"
+              points="10,58  60,65  110,60  160,75  210,68  260,78  310,72" />
+
+            <!-- day labels -->
+            <text class="chart-day-label" x="10"  y="125" text-anchor="middle">Mon</text>
+            <text class="chart-day-label" x="60"  y="125" text-anchor="middle">Tue</text>
+            <text class="chart-day-label" x="110" y="125" text-anchor="middle">Wed</text>
+            <text class="chart-day-label" x="160" y="125" text-anchor="middle">Thu</text>
+            <text class="chart-day-label" x="210" y="125" text-anchor="middle">Fri</text>
+            <text class="chart-day-label" x="260" y="125" text-anchor="middle">Sat</text>
+            <text class="chart-day-label" x="310" y="125" text-anchor="middle">Sun</text>
+          </svg>
+        </div>
+      </div>
     </div>
   </section>
 </div>
