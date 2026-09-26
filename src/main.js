@@ -1,4 +1,4 @@
-import { getWeekLogs } from './appwrite.js';
+import { getWeekLogs, logChore, USER_YOU_ID, USER_BOB_ID } from './appwrite.js';
 import { calculateSplit, calculateDailyTrend, getNudge } from './logic.js';
 import './style.css';
 
@@ -6,6 +6,9 @@ const USER_NAMES = {
   [USER_YOU_ID]: 'You',
   [USER_BOB_ID]: 'Bob',
 };
+
+// Track which user is active on the Log screen
+let activeUserId = USER_YOU_ID;
 
 async function renderDashboard() {
   const logs = await getWeekLogs();
@@ -56,14 +59,37 @@ document.querySelectorAll('.user-pill').forEach(pill => {
   pill.addEventListener('click', () => {
     document.querySelectorAll('.user-pill').forEach(p => p.classList.remove('active'));
     pill.classList.add('active');
+    activeUserId = pill.classList.contains('you') ? USER_YOU_ID : USER_BOB_ID;
   });
 });
 
+const CHORE_WEIGHTS = {
+  'Dishes': 2,
+  'Take out trash': 1,
+  'Vacuum': 3,
+  'Deep clean bathroom': 5,
+  'Laundry': 3,
+  'Wipe counters': 1,
+};
+
 const toast = document.getElementById('log-toast');
 document.querySelectorAll('.chore-chip').forEach(chip => {
-  chip.addEventListener('click', () => {
+  chip.addEventListener('click', async () => {
+    const choreName = chip.querySelector('.chore-name').textContent;
+    const chore = { id: choreName.toLowerCase().replace(/\s+/g, '-'), name: choreName, defaultWeight: CHORE_WEIGHTS[choreName] ?? 1 };
+
+    // Optimistic UI feedback
+    const loggedClass = activeUserId === USER_YOU_ID ? 'logged-you' : 'logged-bob';
+    chip.classList.add(loggedClass);
     toast.classList.add('show');
     setTimeout(() => toast.classList.remove('show'), 1500);
+
+    try {
+      await logChore(activeUserId, chore);
+    } catch (err) {
+      console.error('Failed to log chore:', err);
+      chip.classList.remove(loggedClass);
+    }
   });
 });
 

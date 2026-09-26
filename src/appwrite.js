@@ -8,14 +8,8 @@ export const databases = new Databases(client);
 export const DB_ID = "6ab6bd84002e929506d5";
 
 
-const USER_YOU_ID = "6ab7854c000e732d2cf4";
-const USER_BOB_ID = "6ab7856a00391a9db0cb";
-const USER_NAMES = {
-  [USER_YOU_ID]: 'You',
-  [USER_BOB_ID]: 'Bob',
-};
-
-let currentUserId = USER_YOU_ID;
+export const USER_YOU_ID = "6ab7854c000e732d2cf4";
+export const USER_BOB_ID = "6ab7856a00391a9db0cb";
 
 export async function logChore(userId, chore, effortOverride) {
   return databases.createDocument(
