@@ -11,6 +11,7 @@
   --line: #DAD3C2;
   --nudge-bg: #FBEFD8;
   --nudge-ink: #5C4419;
+  --nudge-border: #EDD9A3;
   --surface: #FFFFFF;
   --radius-card: 18px;
   --radius-pill: 999px;
@@ -46,10 +47,13 @@ body {
   justify-content: space-between;
   padding: 20px 0 16px;
   border-bottom: 1px solid transparent;
-  transition: border-color 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.app-header.scrolled { border-color: var(--line); }
+.app-header.scrolled {
+  border-color: var(--line);
+  box-shadow: 0 2px 12px rgba(38,38,34,0.06);
+}
 
 .wordmark {
   font-family: 'Fraunces', serif;
@@ -76,21 +80,20 @@ body {
   font-size: 13px;
   font-weight: 500;
   color: var(--ink-soft);
-  padding: 6px 14px;
+  padding: 6px 16px;
   border-radius: var(--radius-pill);
   cursor: pointer;
   transition: background 0.15s ease, color 0.15s ease;
 }
 
 .tab:hover:not(.active) { color: var(--ink); }
-
 .tab.active { background: var(--ink); color: var(--paper); }
 
 .hidden { display: none !important; }
 
 /* ── Screens ──────────────────────────────────────────── */
 
-.screen { padding-top: 28px; }
+.screen { padding-top: 32px; }
 
 /* ── Landing ──────────────────────────────────────────── */
 
@@ -103,14 +106,14 @@ body {
   color: var(--you);
   background: var(--you-soft);
   border-radius: var(--radius-pill);
-  padding: 4px 10px;
-  margin-bottom: 16px;
+  padding: 4px 12px;
+  margin-bottom: 20px;
 }
 
 .hero-headline {
   font-family: 'Fraunces', serif;
   font-weight: 700;
-  font-size: 34px;
+  font-size: 36px;
   line-height: 1.1;
   letter-spacing: -0.02em;
 }
@@ -123,18 +126,9 @@ body {
 .hero-sub {
   font-size: 15px;
   color: var(--ink-soft);
-  line-height: 1.6;
-  margin-top: 14px;
+  line-height: 1.7;
+  margin-top: 16px;
   max-width: 38ch;
-}
-
-.hero-bar {
-  margin-top: 32px;
-  border-radius: var(--radius-card);
-  overflow: hidden;
-  border: none;
-  height: 56px;
-  box-shadow: 0 1px 3px rgba(38,38,34,0.08);
 }
 
 .feature-list {
@@ -142,13 +136,13 @@ body {
   margin-top: 28px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
 }
 
 .feature-list li {
   font-size: 14px;
   color: var(--ink-soft);
-  padding-left: 22px;
+  padding-left: 24px;
   position: relative;
   line-height: 1.5;
 }
@@ -172,30 +166,41 @@ body {
   font-family: 'IBM Plex Sans', sans-serif;
   font-size: 15px;
   font-weight: 600;
-  padding: 16px;
+  padding: 17px 20px;
   border-radius: var(--radius-card);
   cursor: pointer;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.02em;
   transition: opacity 0.15s ease, transform 0.12s ease;
 }
 
-.cta-button:hover { opacity: 0.88; }
+.cta-button:hover { opacity: 0.86; }
 .cta-button:active { transform: scale(0.98); }
+
+/* ── Log screen labels ────────────────────────────────── */
+
+.log-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 10px;
+}
 
 /* ── User Toggle ──────────────────────────────────────── */
 
 .user-toggle {
   display: flex;
   gap: 10px;
-  margin-bottom: 24px;
+  margin-bottom: 28px;
 }
 
 .user-pill {
   flex: 1;
   border: 2px solid var(--line);
   background: var(--surface);
-  border-radius: 16px;
-  padding: 12px;
+  border-radius: 14px;
+  padding: 11px;
   font-family: inherit;
   font-size: 15px;
   font-weight: 600;
@@ -217,18 +222,18 @@ body {
   border: 1.5px solid var(--line);
   background: var(--surface);
   border-radius: var(--radius-card);
-  padding: 16px 14px;
+  padding: 18px 14px 16px;
   text-align: left;
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
   transition: transform 0.12s ease, border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .chore-chip:hover {
   border-color: var(--ink);
-  box-shadow: 0 2px 8px rgba(38,38,34,0.06);
+  box-shadow: 0 3px 10px rgba(38,38,34,0.08);
 }
 
 .chore-chip:active { transform: scale(0.96); }
@@ -236,11 +241,14 @@ body {
 .chore-chip.logged-you { border-color: var(--you); background: var(--you-soft); }
 .chore-chip.logged-bob { border-color: var(--bob); background: var(--bob-soft); }
 
+.chore-chip.logged-you .dot.filled { background: var(--you); }
+.chore-chip.logged-bob .dot.filled { background: var(--bob); }
+
 .chore-name { font-size: 14px; font-weight: 500; line-height: 1.4; }
 
-.effort-dots { display: flex; gap: 4px; }
+.effort-dots { display: flex; gap: 5px; }
 
-.dot { width: 7px; height: 7px; border-radius: 50%; background: var(--line); display: block; }
+.dot { width: 7px; height: 7px; border-radius: 50%; background: var(--line); display: block; flex-shrink: 0; }
 .dot.filled { background: var(--ink); }
 
 /* ── Toast ────────────────────────────────────────────── */
@@ -249,17 +257,18 @@ body {
   position: fixed;
   bottom: 28px;
   left: 50%;
-  transform: translateX(-50%) translateY(12px);
+  transform: translateX(-50%) translateY(14px);
   background: var(--ink);
   color: var(--paper);
   font-size: 13px;
   font-weight: 500;
-  padding: 11px 20px;
+  padding: 11px 22px;
   border-radius: var(--radius-pill);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  transition: opacity 0.22s ease, transform 0.22s ease;
   white-space: nowrap;
+  letter-spacing: 0.01em;
 }
 
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
@@ -267,9 +276,9 @@ body {
 /* ── Dashboard ────────────────────────────────────────── */
 
 .section-title {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--ink-soft);
   margin: 32px 0 12px;
@@ -277,11 +286,11 @@ body {
 
 .split-bar {
   display: flex;
-  height: 52px;
+  height: 56px;
   border-radius: var(--radius-card);
   overflow: hidden;
   border: none;
-  box-shadow: 0 1px 3px rgba(38,38,34,0.08);
+  box-shadow: 0 1px 4px rgba(38,38,34,0.10);
 }
 
 .split-fill { display: flex; align-items: center; justify-content: center; transition: width 0.6s ease; }
@@ -290,12 +299,28 @@ body {
 
 .split-label { color: #fff; font-size: 13px; font-weight: 600; white-space: nowrap; }
 
+/* ── Nudge ────────────────────────────────────────────── */
+
+.nudge {
+  margin-top: 14px;
+  background: var(--nudge-bg);
+  border: 1px solid var(--nudge-border);
+  border-radius: 14px;
+  padding: 14px 16px;
+}
+
+.nudge p {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--nudge-ink);
+}
+
 /* ── Trend Chart ──────────────────────────────────────── */
 
 .chart-wrap {
   background: var(--surface);
   border-radius: var(--radius-card);
-  padding: 12px 16px 4px;
+  padding: 14px 16px 10px;
   border: 1px solid var(--line);
   position: relative;
 }
@@ -303,7 +328,7 @@ body {
 .chart-legend {
   display: flex;
   gap: 16px;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
 .legend-item {
@@ -338,118 +363,13 @@ body {
   font-family: 'IBM Plex Sans', sans-serif;
 }
 
-/* ══════════════════════════════════════════════════════════
-   RESPONSIVE — tablet / small desktop  ≥ 768px
-   ══════════════════════════════════════════════════════════ */
-
-@media (min-width: 768px) {
-
-  #app {
-    max-width: 720px;
-    padding: 0 32px 80px;
-  }
-
-  .app-header {
-    padding: 24px 0 18px;
-  }
-
-  .wordmark { font-size: 24px; }
-
-  /* Landing — larger hero text */
-  .hero-headline { font-size: 42px; }
-
-  .hero-sub { font-size: 16px; max-width: 46ch; }
-
-  .hero-bar { height: 64px; }
-
-  .feature-list { flex-direction: row; flex-wrap: wrap; gap: 14px 32px; margin-top: 32px; }
-
-  .feature-list li { font-size: 15px; }
-
-  .cta-button { max-width: 320px; }
-
-  /* Log — 3-column chore grid */
-  .chore-grid { grid-template-columns: repeat(3, 1fr); gap: 14px; }
-
-  /* Dashboard — side-by-side split + chart */
-  .dashboard-cols {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
-    align-items: start;
-  }
-
-  .dashboard-cols .section-title:first-child { margin-top: 0; }
-
-  .split-bar { height: 60px; }
-
-  .chart-wrap { padding: 14px 18px 6px; }
-
-  .trend-chart { height: 130px; }
-
-  .nudge { margin-top: 0; font-size: 15px; }
-
-  /* Section title — reduce top margin inside cols */
-  .dashboard-cols .section-title { margin-top: 0; }
-}
-
-/* ══════════════════════════════════════════════════════════
-   RESPONSIVE — wide desktop  ≥ 1100px
-   ══════════════════════════════════════════════════════════ */
-
-@media (min-width: 1100px) {
-
-  #app {
-    max-width: 920px;
-    padding: 0 40px 96px;
-  }
-
-  /* Landing — two-column hero */
-  .hero-layout {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 56px;
-    align-items: center;
-  }
-
-  .hero-right { display: flex; flex-direction: column; justify-content: center; }
-
-  .hero-headline { font-size: 52px; }
-
-  .hero-sub { max-width: 100%; }
-
-  .hero-bar { margin-top: 0; }
-
-  .feature-list { flex-direction: column; gap: 14px; margin-top: 24px; }
-
-  .cta-button { max-width: 100%; margin-top: 32px; }
-
-  /* Log — 4-column chore grid */
-  .chore-grid { grid-template-columns: repeat(4, 1fr); gap: 16px; }
-
-  /* User toggle wider */
-  .user-toggle { max-width: 320px; }
-}
-
-/* ══════════════════════════════════════════════════════════
-   TOUCH — remove hover effects on coarse-pointer devices
-   ══════════════════════════════════════════════════════════ */
-
-@media (hover: none) {
-  .chore-chip:hover { border-color: var(--line); box-shadow: none; }
-  .tab:hover:not(.active) { color: var(--ink-soft); }
-  .user-pill:hover:not(.active) { border-color: var(--line); color: var(--ink-soft); }
-  .cta-button:hover { opacity: 1; }
-}
-
-
 /* ── Back button ──────────────────────────────────────── */
 
 .back-button {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
   border: 1.5px solid var(--line);
   background: transparent;
   font-family: inherit;
@@ -471,7 +391,7 @@ body {
 
 .hero-left { display: flex; flex-direction: column; }
 
-.hero-right { display: flex; flex-direction: column; margin-top: 28px; }
+.hero-right { display: flex; flex-direction: column; margin-top: 32px; }
 
 /* ── Dashboard columns (mobile-first single column) ───── */
 
@@ -481,3 +401,100 @@ body {
 .dashboard-col-right { display: flex; flex-direction: column; }
 
 .dashboard-col-right { margin-top: 8px; }
+
+/* ══════════════════════════════════════════════════════════
+   RESPONSIVE — tablet / small desktop  ≥ 768px
+   ══════════════════════════════════════════════════════════ */
+
+@media (min-width: 768px) {
+
+  #app {
+    max-width: 720px;
+    padding: 0 32px 80px;
+  }
+
+  .app-header {
+    padding: 24px 0 18px;
+  }
+
+  .wordmark { font-size: 24px; }
+
+  .hero-headline { font-size: 44px; }
+
+  .hero-sub { font-size: 16px; max-width: 46ch; }
+
+  .feature-list { flex-direction: row; flex-wrap: wrap; gap: 14px 32px; margin-top: 32px; }
+
+  .feature-list li { font-size: 15px; }
+
+  .cta-button { max-width: 320px; }
+
+  /* Log — 3-column chore grid */
+  .chore-grid { grid-template-columns: repeat(3, 1fr); gap: 14px; }
+
+  /* Dashboard — side-by-side split + chart */
+  .dashboard-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+
+  .dashboard-cols .section-title { margin-top: 0; }
+
+  .split-bar { height: 60px; }
+
+  .chart-wrap { padding: 14px 18px 10px; }
+
+  .trend-chart { height: 130px; }
+
+  .nudge { margin-top: 14px; font-size: 15px; }
+}
+
+/* ══════════════════════════════════════════════════════════
+   RESPONSIVE — wide desktop  ≥ 1100px
+   ══════════════════════════════════════════════════════════ */
+
+@media (min-width: 1100px) {
+
+  #app {
+    max-width: 920px;
+    padding: 0 40px 96px;
+  }
+
+  /* Landing — two-column hero */
+  .hero-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+    align-items: center;
+  }
+
+  .hero-right { display: flex; flex-direction: column; justify-content: center; margin-top: 0; }
+
+  .hero-headline { font-size: 52px; }
+
+  .hero-sub { max-width: 100%; }
+
+  .feature-list { flex-direction: column; gap: 14px; margin-top: 24px; }
+
+  .cta-button { max-width: 100%; margin-top: 32px; }
+
+  /* Log — 4-column chore grid */
+  .chore-grid { grid-template-columns: repeat(4, 1fr); gap: 16px; }
+
+  /* User toggle wider */
+  .user-toggle { max-width: 320px; }
+}
+
+/* ══════════════════════════════════════════════════════════
+   TOUCH — remove hover effects on coarse-pointer devices
+   ══════════════════════════════════════════════════════════ */
+
+@media (hover: none) {
+  .chore-chip:hover { border-color: var(--line); box-shadow: none; }
+  .tab:hover:not(.active) { color: var(--ink-soft); }
+  .user-pill:hover:not(.active) { border-color: var(--line); color: var(--ink-soft); }
+  .cta-button:hover { opacity: 1; }
+  .back-button:hover { border-color: var(--line); color: var(--ink-soft); }
+}
