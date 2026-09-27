@@ -20,16 +20,28 @@ export function calculateDailyTrend(logs, userAId, userBId) {
     byDay[day][log.userId] += log.weight;
   });
 
-  return Object.entries(byDay)
-    .sort(([a], [b]) => a.localeCompare(b))
-    .map(([day, vals]) => {
-      const total = vals[userAId] + vals[userBId];
-      return {
-        day,
-        [userAId]: total ? Math.round((vals[userAId] / total) * 100) : 50,
-        [userBId]: total ? Math.round((vals[userBId] / total) * 100) : 50,
-      };
-    });
+  // Build the Mon–Sun dates for the current ISO week so every day slot is present
+  const today = new Date();
+  // dayOfWeek: 0=Sun..6=Sat → convert to Mon=0..Sun=6
+  const dow = (today.getDay() + 6) % 7;
+  const monday = new Date(today);
+  monday.setDate(today.getDate() - dow);
+
+  const weekDays = Array.from({ length: 7 }, (_, i) => {
+    const d = new Date(monday);
+    d.setDate(monday.getDate() + i);
+    return d.toISOString().slice(0, 10);
+  });
+
+  return weekDays.map(day => {
+    const vals = byDay[day] ?? { [userAId]: 0, [userBId]: 0 };
+    const total = vals[userAId] + vals[userBId];
+    return {
+      day,
+      [userAId]: total ? Math.round((vals[userAId] / total) * 100) : 50,
+      [userBId]: total ? Math.round((vals[userBId] / total) * 100) : 50,
+    };
+  });
 }
 
 const nudgeTemplates = {

@@ -27,18 +27,36 @@ async function renderDashboard() {
   // Update nudge text
   document.querySelector('.nudge p').textContent = nudge;
 
-  // Trend chart (simple version using your existing SVG polylines)
+  // Trend chart — X positions must match the fixed day-label positions in the SVG
+  const DAY_X = [10, 60, 110, 160, 210, 260, 310];
   const trend = calculateDailyTrend(logs, USER_YOU_ID, USER_BOB_ID);
-  if (trend.length > 0) {
-    const width = 320;
-    const step = width / Math.max(trend.length - 1, 1);
 
-    const youPoints = trend.map((d, i) => `${i * step},${120 - d[USER_YOU_ID] * 1.2}`).join(' ');
-    const bobPoints = trend.map((d, i) => `${i * step},${120 - d[USER_BOB_ID] * 1.2}`).join(' ');
-
-    document.querySelector('.trend-line.you').setAttribute('points', youPoints);
-    document.querySelector('.trend-line.bob').setAttribute('points', bobPoints);
+  // Build a smooth cubic Bézier path through all 7 data points.
+  // Uses Catmull-Rom → cubic Bézier conversion with tension 0.4.
+  function smoothPath(pts) {
+    if (pts.length === 0) return '';
+    const t = 0.4;
+    let d = `M ${pts[0][0]},${pts[0][1]}`;
+    for (let i = 0; i < pts.length - 1; i++) {
+      const p0 = pts[i - 1] ?? pts[i];
+      const p1 = pts[i];
+      const p2 = pts[i + 1];
+      const p3 = pts[i + 2] ?? p2;
+      const cp1x = p1[0] + (p2[0] - p0[0]) * t;
+      const cp1y = p1[1] + (p2[1] - p0[1]) * t;
+      const cp2x = p2[0] - (p3[0] - p1[0]) * t;
+      const cp2y = p2[1] - (p3[1] - p1[1]) * t;
+      d += ` C ${cp1x},${cp1y} ${cp2x},${cp2y} ${p2[0]},${p2[1]}`;
+    }
+    return d;
   }
+
+  // Always overwrite d (clears placeholder values when there is no data)
+  const youPts = trend.map((d, i) => [DAY_X[i], 120 - d[USER_YOU_ID] * 1.2]);
+  const bobPts = trend.map((d, i) => [DAY_X[i], 120 - d[USER_BOB_ID] * 1.2]);
+
+  document.querySelector('.trend-line.you').setAttribute('d', smoothPath(youPts));
+  document.querySelector('.trend-line.bob').setAttribute('d', smoothPath(bobPts));
 }
 
 
